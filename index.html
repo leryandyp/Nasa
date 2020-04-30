@@ -122,7 +122,7 @@
         async function cargarImagen(url_API){
             const nasa = await getData(url_API)
             console.log('API hdurl: ', nasa.hdurl)
-            const imgTemplate = `<div><a href="${nasa.hdurl}" download ><img src="${nasa.hdurl}" alt="No found"/></a></div>` 
+            const imgTemplate = `<div><a href="${nasa.hdurl}"><img src="${nasa.hdurl}" alt="No found"/></a></div>` 
             const element = createTemplate(imgTemplate)
             imagen.append(element)
             //--
