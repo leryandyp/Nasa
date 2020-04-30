@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA - APOD</title>
+    <style>
+        body{
+            background-color: cadetblue;
+        }
+        .contenedor{
+            font-size: 200px;
+            color: blue;
+            text-align: center;
+            background-color: chartreuse;
+
+        }
+        .contenedor.blanco{
+            color:white;
+        }
+        .btn{
+            text-align: center;
+            
+        }
+        .btn button{
+            font-size: 15px;
+            height: 50px;
+            width: 100px;
+        }
+        .nasa {
+            text-align: center;
+        }
+        .nasa img{
+            border-radius: 35%;
+            margin: 10px;
+            padding: 5px;
+            width: 60%;
+            height: 60%;
+        }
+        .title{
+            text-align: center;
+            margin: 15px;
+            color: whitesmoke;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="contenedor" id="texto"></div>
+    <br>
+    <div class = "btn">
+        <button onclick= "sorteo()">Sortear</button>
+    </div> -->
+    <div class="title">
+        <h2><b>Imagen de Astronomía del día NASA - APOD</b></h2>
+        <span id="fecha"></span>
+    </div>
+    <br>
+    <div class="nasa" id="imagen">
+        
+    </div>
+    <div class="btn">
+        <input type="number" name="" id="day" placeholder="Día" value="00">
+      
+        <input type="number" name="" id="month" placeholder="Fecha" value="00">
+        
+        <input type="number" name="" id="year" placeholder="Año" value="0000">
+        <br><br>
+        <button onclick="buscar()">Buscar Imagen</button>
+        <br>
+    </div>
+    
+    
+
+
+
+    <script>
+
+        function numero(){
+            return new Promise((resolve, reject)=>{
+                
+                for(let i = 0; i < 10; i++){
+                    setTimeout(()=>{
+                        let numRamdom = (Math.floor(Math.random() * limit)) + 1 //azar de 0 al 9 + -> 1 al 10
+                        console.log(numRamdom)
+
+                        numRamdom = `<div>${numRamdom}</div>`
+                        texto.innerHTML = numRamdom
+                    }, 100 * i)
+                }
+                setTimeout(()=>{
+                    resolve()
+                }, 900)
+            })
+        };
+
+        function sorteo(){
+            texto.classList.add('blanco')
+                numero()
+                    .then(()=>{
+                        texto.classList.remove('blanco')
+                    })
+        };
+
+        function createTemplate(HTMLString){
+            const html = document.implementation.createHTMLDocument();
+            html.body.innerHTML = HTMLString;
+            return html.body.children[0]
+        }
+
+        async function getData(url){
+            try{
+               const response = await fetch(url)
+               const data = await response.json()
+                console.log('Descripción: ', data.explanation)
+               return data;
+            }catch(e){
+                console.log(`Error en la peticion API-GET -> ${e}`)
+            }
+        };
+
+        async function cargarImagen(url_API){
+            const nasa = await getData(url_API)
+            console.log('API hdurl: ', nasa.hdurl)
+            const imgTemplate = `<div><a href="${nasa.hdurl}" download ><img src="${nasa.hdurl}" alt="No found"/></a></div>` 
+            const element = createTemplate(imgTemplate)
+            imagen.append(element)
+            //--
+        }
+
+        function cargarRango(año,mes,diaIni,diaFin){
+            for(let i = diaIni; i <= diaFin; i++){
+                let url_dia = `https://api.nasa.gov/planetary/apod?date=${año}-${mes}-${i}&api_key=${KEY}`;
+                cargarImagen(url_dia)
+            }
+        }
+
+        function buscar(){
+            try{
+                let elDia = parseInt(day.value)
+                let elMes = parseInt(month.value)
+                let elAño = parseInt(year.value)
+                console.log(elAño,elMes,elDia)
+                cargarRango(elAño,elMes,elDia,elDia)
+    
+            }catch(e){
+                console.log(error)
+                alert('Fecha no Válida')
+            }
+            
+        }
+
+        // const texto = document.getElementById('texto')
+        // const limit = 10   //sorteo hasta rango
+        // sorteo()
+
+        const fechaDom = document.getElementById('fecha')
+        const imagen = document.getElementById('imagen')
+        const semana = ["Lun","Mar","Mie","Jue","Vie","Sab","Dom"]
+        const DATA = new Date();
+        const fecha = `${DATA.getFullYear()}-${DATA.getMonth()+1}-${DATA.getDate()}`
+        const fechaUser = `${semana[DATA.getUTCDay()-1]}. ${DATA.getDate()} - ${DATA.getMonth()+1} - ${DATA.getFullYear()}`
+        console.log(fecha)
+
+        const KEY = 'clg0QI1qIlCPdG2jqi1RPQ2eEhh4fl5fuqCQNxiA';
+        const API_NASA = `https://api.nasa.gov/planetary/apod?date=${fecha}&api_key=${KEY}`;
+        
+        cargarImagen(API_NASA)        
+        fechaDom.innerHTML = fechaUser
+        console.log(DATA)
+
+        const day = document.getElementById('day')
+        const month = document.getElementById('month')
+        const year = document.getElementById('year')
+        day.value =""
+        month.value =""
+        year.value =""
+        
+        //cargarRango(2010,04,1,15)
+
+        
+        
+      
+                               // const array =  new Array(6).fill(0).map(n => Math.floor(Math.random() * 4))
+        //const insertar = template(numRamdom)
+        // texto.append(insertar)
+       
+    </script>
+</body>
+ <footer style="text-align: center; font-size: 15px; color: whitesmoke">
+    <br><br>
+    <span>by: Leryandy</span>
+ </footer>
+</html>
