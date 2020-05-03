@@ -153,10 +153,10 @@
 
         const fechaDom = document.getElementById('fecha')
         const imagen = document.getElementById('imagen')
-        const semana = ["Lun","Mar","Mie","Jue","Vie","Sab","Dom"]
+        const semana = ["Dom","Lun","Mar","Mie","Jue","Vie","Sab"]
         const DATA = new Date();
         const fecha = `${DATA.getFullYear()}-${DATA.getMonth()+1}-${DATA.getDate()}`
-        const fechaUser = `${semana[DATA.getUTCDay()-1]}. ${DATA.getDate()} - ${DATA.getMonth()+1} - ${DATA.getFullYear()}`
+        const fechaUser = `${semana[DATA.getDay()]}. ${DATA.getDate()} - ${DATA.getMonth()+1} - ${DATA.getFullYear()}`
         console.log(fecha)
 
         const KEY = 'clg0QI1qIlCPdG2jqi1RPQ2eEhh4fl5fuqCQNxiA';
